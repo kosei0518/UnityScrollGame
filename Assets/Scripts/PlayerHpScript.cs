@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerHpScript : MonoBehaviour
 {
-    public static int playerHp = 5;
+    public static int playerHp;
     bool once = false;
     Rigidbody2D rb;
     float transparency = 0.2f;
@@ -17,7 +17,8 @@ public class PlayerHpScript : MonoBehaviour
     private int gameLimit;
     private int timeLeft;
     public Text gameTimeText;
-    
+    [SerializeField] private GameObject playerLayer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class PlayerHpScript : MonoBehaviour
         playerInvalid = false;
         gameLimit = 300;
         timeLeft = 10;
+        playerHp = 5;
     }
     
 
@@ -50,7 +52,7 @@ public class PlayerHpScript : MonoBehaviour
         if (playerInvalid == false)
         {
             StartCoroutine("PlayerInvisible");
-            
+            PlayerSetLayerFalse();
             playerHp--;
             
 
@@ -72,6 +74,7 @@ public class PlayerHpScript : MonoBehaviour
         playerInvalid = true;
         yield return new WaitForSeconds(1.5f);
         sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 1.0f);
+        playerLayer.layer = 9;
         playerInvalid = false;
     }
     private IEnumerator TimeOver()
@@ -83,5 +86,11 @@ public class PlayerHpScript : MonoBehaviour
     {
         return playerHp;
     }
-    
+    void PlayerSetLayerFalse()
+    {
+
+        playerLayer.layer = 10;
+
+    }
+
 }

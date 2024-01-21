@@ -14,12 +14,12 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rbody2D;
     public float jumpForce = 18f;
-
+    private float moveSpeed = 5.5f;
     public bool equipSwordBool;
     public bool swordBool;
     private bool rightWall;
     private bool leftWall;
-    
+
     public GameObject swordAttackRange;
     private bool rightStopper;
     private bool leftStopper;
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     public bool playerRightDirection = true;
     private float jumpLimiter = 0.0f;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,32 +48,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Debug.Log(rightStopper);
-        float distanceToWall = 1111f;
-        Vector2 direction = transform.right;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, distanceToWall);
 
-        if (hit.collider.CompareTag("Object") || hit.collider.CompareTag("floor"))
-        {
-            Debug.Log("れいが当たってる");
-            if (rightWalk == true)
-            {
-                rightStopper = true;
-            }
-            if(leftWalk == true)
-            {
-                leftStopper = true;
-            }
-        }
-        else
-        {
-            rightStopper = false;
-            leftStopper = false;
-        }
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
-            
+
             rightWalk = false;
             leftWalk = true;
 
@@ -93,39 +73,44 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("GameOver");
         }
+        Vector2 moveVector = Vector2.zero;
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            if (rightStopper == false)
-            {
-                playerObj.transform.position += new Vector3(5.5f, 0, 0) * Time.deltaTime;
-                //rightWalk = true;
 
-            }
-            
+
+            //playerObj.transform.position += new Vector3(5.5f, 0, 0) * Time.deltaTime;
+            //rbody2D.AddForce(new Vector2(0.01f * Time.deltaTime, 0), ForceMode2D.Impulse);
+            //rightWalk = true;
+            //Move(Vector2.right);
+            moveVector = Vector2.right * moveSpeed;
+
+
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            if (leftStopper == false)
-            {
-                playerObj.transform.position += new Vector3(-5.5f, 0, 0) * Time.deltaTime;
-                //leftWalk = true;
-            }
-            
+
+
+            //playerObj.transform.position += new Vector3(-5.5f, 0, 0) * Time.deltaTime;
+            //rbody2D.AddForce(new Vector2(-0.01f * Time.deltaTime, 0), ForceMode2D.Impulse);
+
+            //Move(Vector2.left);
+            moveVector = Vector2.left * moveSpeed;
+
 
         }
-
+        rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if(playerJumpBool == true)
+            if (playerJumpBool == true)
             {
-                
+
                 GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
 
                 playerJumpBool = false;
                 jumpLimiter = 0.0f;
 
-                
+
                 anim.SetBool("jumpAnimBool", true);
             }
         }
@@ -159,15 +144,19 @@ public class PlayerController : MonoBehaviour
 
 
         }
-        
+
     }
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("floor") || other.gameObject.CompareTag("Object"))
         {
             playerJumpBool = false;
-            
+
         }
     }
-
+    void Move(Vector2 direction)
+    {
+        Vector2 force = direction * moveSpeed;
+        rbody2D.velocity = new Vector2(force.x, rbody2D.velocity.y);
+    }
 }
