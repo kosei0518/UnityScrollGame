@@ -22,7 +22,7 @@ TagManager:
   - 
   - Ground
   - Player
-  - Player2
+  - TransparentPlayer
   - Enemy
   - 
   - 

@@ -76,15 +76,7 @@ public class PlayerController : MonoBehaviour
         Vector2 moveVector = Vector2.zero;
         if (Input.GetKey(KeyCode.RightArrow))
         {
-
-
-            //playerObj.transform.position += new Vector3(5.5f, 0, 0) * Time.deltaTime;
-            //rbody2D.AddForce(new Vector2(0.01f * Time.deltaTime, 0), ForceMode2D.Impulse);
-            //rightWalk = true;
-            //Move(Vector2.right);
             moveVector = Vector2.right * moveSpeed;
-
-
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
