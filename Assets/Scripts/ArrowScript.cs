@@ -27,7 +27,7 @@ public class ArrowScript : MonoBehaviour
         equipBowBool = false;
         bowImage = bowObj.GetComponent<SpriteRenderer>();
         bowImage.color = new Color(bowImage.color.r, bowImage.color.g, bowImage.color.b, 0.0f);
-        arrowImage= GetComponent<SpriteRenderer>();
+        arrowImage = GetComponent<SpriteRenderer>();
         arrowImage.color = new Color(arrowImage.color.r, arrowImage.color.g, arrowImage.color.b, 0.0f);
 
     }
@@ -55,26 +55,33 @@ public class ArrowScript : MonoBehaviour
         bowImage.color = new Color(bowImage.color.r, bowImage.color.g, bowImage.color.b, 1.0f);
         arrowImage.color = new Color(arrowImage.color.r, arrowImage.color.g, arrowImage.color.b, 1.0f);
     }
+    public void RemoveBow()
+    {
+        equipBowBool = false;
+        bowImage.color = new Color(bowImage.color.r, bowImage.color.g, bowImage.color.b, 0.0f);
+        arrowImage.color = new Color(arrowImage.color.r, arrowImage.color.g, arrowImage.color.b, 0.0f);
+    }
     void Shoot()
     {
         playerPos = player.transform.position;
-            //player.transform.rotation;
-        if(playerController.playerRightDirection == true)
+        //player.transform.rotation;
+        if (playerController.playerRightDirection == true)
         {
             playerPos.x += 1f;
             playerRotation = Quaternion.Euler(0, 0, -45);
-        }else if(playerController.playerRightDirection == false)
+        }
+        else if (playerController.playerRightDirection == false)
         {
             playerPos.x += -1;
             playerRotation = Quaternion.Euler(0, 180, -45);
         }
-        
+
         Instantiate(arrowObj, playerPos, playerRotation);
-        
+
 
     }
     public void EquipSword()
     {
-        
+
     }
 }

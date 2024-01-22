@@ -10,7 +10,7 @@ public class SwordRangeScript : MonoBehaviour
     public static float swordAttackCoolTime;
     private float swordCoolTime;
     private bool equipSwordBool;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +35,11 @@ public class SwordRangeScript : MonoBehaviour
                 }
 
             }
-        }   
-        
+        }
+
     }
     public void OnTriggerStay2D(Collider2D other)
-    {   
+    {
         if (other.gameObject.CompareTag("Enemy"))
         {
             swordWithinRange = true;
@@ -58,7 +58,7 @@ public class SwordRangeScript : MonoBehaviour
     private void SwordAttack(Collider2D other)
     {
         Debug.Log("攻撃");
-        
+
         if (swordWithinRange == true)
         {
             Debug.Log("敵がいた");
@@ -70,5 +70,8 @@ public class SwordRangeScript : MonoBehaviour
     {
         equipSwordBool = true;
     }
-    
+    public void RemoveSword()
+    {
+        equipSwordBool = false;
+    }
 }

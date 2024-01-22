@@ -54,16 +54,14 @@ public class PlayerController : MonoBehaviour
         {
             playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
 
-            rightWalk = false;
-            leftWalk = true;
+
 
             playerRightDirection = false;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             playerObj.transform.rotation = Quaternion.Euler(0, 0, 0);
-            rightWalk = true;
-            leftWalk = false;
+
 
             playerRightDirection = true;
         }
@@ -81,22 +79,13 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-
-
-            //playerObj.transform.position += new Vector3(-5.5f, 0, 0) * Time.deltaTime;
-            //rbody2D.AddForce(new Vector2(-0.01f * Time.deltaTime, 0), ForceMode2D.Impulse);
-
-            //Move(Vector2.left);
             moveVector = Vector2.left * moveSpeed;
-
-
         }
         rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (playerJumpBool == true)
             {
-
                 GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
 
                 playerJumpBool = false;

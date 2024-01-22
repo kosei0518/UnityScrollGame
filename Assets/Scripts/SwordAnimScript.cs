@@ -7,7 +7,7 @@ public class SwordAnimScript : MonoBehaviour
     private Animator swordAnim;
     public float swordCoolTime;
     SpriteRenderer swordImage;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +15,7 @@ public class SwordAnimScript : MonoBehaviour
         swordCoolTime = 1.0f;
         swordImage = GetComponent<SpriteRenderer>();
         swordImage.color = new Color(swordImage.color.r, swordImage.color.g, swordImage.color.b, 0.0f);
-        
+
     }
 
 
@@ -23,7 +23,7 @@ public class SwordAnimScript : MonoBehaviour
     void Update()
     {
         swordCoolTime += Time.deltaTime;
-        
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             if (swordCoolTime >= 0.8f)
@@ -31,7 +31,7 @@ public class SwordAnimScript : MonoBehaviour
                 StartCoroutine(SwordCoroutine());
                 swordCoolTime = 0f;
             }
-            
+
         }
     }
     private IEnumerator SwordCoroutine()
@@ -43,5 +43,9 @@ public class SwordAnimScript : MonoBehaviour
     public void EquipSword()
     {
         swordImage.color = new Color(swordImage.color.r, swordImage.color.g, swordImage.color.b, 1.0f);
+    }
+    public void RemoveSword()
+    {
+        swordImage.color = new Color(swordImage.color.r, swordImage.color.g, swordImage.color.b, 0.0f);
     }
 }
