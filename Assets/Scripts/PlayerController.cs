@@ -84,15 +84,27 @@ public class PlayerController : MonoBehaviour
         rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
         if (Input.GetKeyDown(KeyCode.Space))
         {
+
+            RaycastHit hit;
+            Debug.DrawRay(gameObject.transform.position, Vector2.down * 1f, Color.blue, 10.0f);
+            // Rayが "floor" タグにヒットした場合
+            if (Physics.Raycast(gameObject.transform.position, Vector2.down, out hit, 6.0f))
+            {
+                // デバッグログに "ジャンプ" を表示
+                Debug.Log("ジャンプ");
+                GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
+                anim.SetBool("jumpAnimBool", true);
+
+            }
             if (playerJumpBool == true)
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
+                //GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
 
                 playerJumpBool = false;
                 jumpLimiter = 0.0f;
 
 
-                anim.SetBool("jumpAnimBool", true);
+                //anim.SetBool("jumpAnimBool", true);
             }
         }
 
