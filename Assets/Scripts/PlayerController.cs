@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private float playerSpeed;
     public bool playerJumpBool = true;
 
+
     private Animator anim;
 
     private Rigidbody2D rbody2D;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     public bool playerRightDirection = true;
     private float jumpLimiter = 0.0f;
+    private float rayPosX;
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +51,14 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.Log(rightStopper);
 
-
+        if (playerRightDirection == true)
+        {
+            rayPosX = -0.4f;
+        }
+        else if (playerRightDirection == false)
+        {
+            rayPosX = 0.4f;
+        }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -75,37 +84,57 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             moveVector = Vector2.right * moveSpeed;
+
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             moveVector = Vector2.left * moveSpeed;
+
         }
         rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
+
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            Vector2 playerPosition = transform.position;
+            Vector2 frontRay = new Vector2(playerPosition.x + rayPosX, playerPosition.y - 0.6f);
 
-            RaycastHit hit;
-            Debug.DrawRay(gameObject.transform.position, Vector2.down * 1f, Color.blue, 10.0f);
+            RaycastHit2D hit = Physics2D.Raycast(frontRay, Vector2.down, 0.6f);
+
+            //RaycastHit hit;
+            Debug.DrawRay(frontRay, Vector2.down * 0.6f, Color.blue, 10.0f);
             // Rayが "floor" タグにヒットした場合
-            if (Physics.Raycast(gameObject.transform.position, Vector2.down, out hit, 6.0f))
+            if (hit.collider != null)
             {
                 // デバッグログに "ジャンプ" を表示
                 Debug.Log("ジャンプ");
-                GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
-                anim.SetBool("jumpAnimBool", true);
+                Debug.Log("Rayがヒットしたオブジェクト: " + hit.collider.name + ", タグ: " + hit.collider.tag);
+                if (hit.collider.CompareTag("floor") || hit.collider.CompareTag("Object"))
+                {
+                    if (playerJumpBool = true)
+                    {
+                        GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
+                        anim.SetBool("jumpAnimBool", true);
+                        playerJumpBool = false;
+                    }
+                }
 
             }
-            if (playerJumpBool == true)
+            else
             {
-                //GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
-
-                playerJumpBool = false;
-                jumpLimiter = 0.0f;
-
-
-                //anim.SetBool("jumpAnimBool", true);
+                Debug.Log("raycastがnullです");
             }
+            //if (playerJumpBool == true)
+            //{
+            //GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
+
+            playerJumpBool = false;
+            jumpLimiter = 0.0f;
+
+
+            //anim.SetBool("jumpAnimBool", true);
+            //}
         }
 
     }
