@@ -28,7 +28,7 @@ public class PlayerHpScript : MonoBehaviour
         playerInvalid = false;
         gameLimit = 300;
         timeLeft = 10;
-        playerHp = 3;
+        playerHp = 20;
     }
 
 
