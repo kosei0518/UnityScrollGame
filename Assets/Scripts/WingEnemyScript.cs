@@ -58,5 +58,13 @@ public class WingEnemyScript : MonoBehaviour
         {
             player.SendMessage("DamageToPlayer");
         }
+        if (other.gameObject.CompareTag("Arrow"))
+        {
+            DamageToEnemy();
+        }
+    }
+    public void DamageToEnemy()
+    {
+        Destroy(this.gameObject);
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PlayerHpScript : MonoBehaviour
 {
     public static int playerHp;
-    bool once = false;
+    bool onceCallGameOver = false;
     Rigidbody2D rb;
     float transparency = 0.2f;
     SpriteRenderer sr;
@@ -28,9 +28,9 @@ public class PlayerHpScript : MonoBehaviour
         playerInvalid = false;
         gameLimit = 300;
         timeLeft = 10;
-        playerHp = 5;
+        playerHp = 3;
     }
-    
+
 
     // Update is called once per frame
     void Update()
@@ -41,10 +41,10 @@ public class PlayerHpScript : MonoBehaviour
             timeLeft = gameLimit - (int)gameTimer;
             gameTimeText.text = timeLeft.ToString();
         }
-        if(timeLeft <= 0)
+        if (timeLeft <= 0)
         {
             StartCoroutine("TimeOver");
-            
+
         }
     }
     public void DamageToPlayer()
@@ -54,15 +54,15 @@ public class PlayerHpScript : MonoBehaviour
             StartCoroutine("PlayerInvisible");
             PlayerSetLayerFalse();
             playerHp--;
-            
+
 
             if (playerHp <= 0)
             {
-                if (once == false)
+                if (onceCallGameOver == false)
                 {
                     Debug.Log("gameover");
                     SceneManager.LoadScene("GameOver");
-                    once = true;
+                    onceCallGameOver = true;
 
                 }
             }
@@ -92,5 +92,8 @@ public class PlayerHpScript : MonoBehaviour
         playerLayer.layer = 10;
 
     }
-
+    public void Recover()
+    {
+        playerHp++;
+    }
 }

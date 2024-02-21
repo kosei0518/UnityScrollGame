@@ -11,6 +11,7 @@ TagManager:
   - Sword
   - Arrow
   - Bow
+  - apple
   layers:
   - Default
   - TransparentFX

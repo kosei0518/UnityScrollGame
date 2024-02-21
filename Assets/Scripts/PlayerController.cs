@@ -51,14 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.Log(rightStopper);
 
-        if (playerRightDirection == true)
-        {
-            rayPosX = -0.4f;
-        }
-        else if (playerRightDirection == false)
-        {
-            rayPosX = 0.4f;
-        }
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -98,28 +91,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Vector2 playerPosition = transform.position;
-            Vector2 frontRay = new Vector2(playerPosition.x + rayPosX, playerPosition.y - 0.6f);
-
-            RaycastHit2D hit = Physics2D.Raycast(frontRay, Vector2.down, 0.6f);
-
+            Vector2 frontRayPos = new Vector2(playerPosition.x + 0.5f, playerPosition.y - 0.6f);
+            Vector2 behindRayPos = new Vector2(playerPosition.x + -0.5f, playerPosition.y - 0.6f);
+            RaycastHit2D hit = Physics2D.Raycast(frontRayPos, Vector2.down, 0.4f);
+            RaycastHit2D behind_hit = Physics2D.Raycast(behindRayPos, Vector2.down, 0.4f);
             //RaycastHit hit;
-            Debug.DrawRay(frontRay, Vector2.down * 0.6f, Color.blue, 10.0f);
+            Debug.DrawRay(frontRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
+            Debug.DrawRay(behindRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
             // Rayが "floor" タグにヒットした場合
-            if (hit.collider != null)
+            if (hit.collider != null || behind_hit.collider != null)
             {
-                // デバッグログに "ジャンプ" を表示
-                Debug.Log("ジャンプ");
-                Debug.Log("Rayがヒットしたオブジェクト: " + hit.collider.name + ", タグ: " + hit.collider.tag);
-                if (hit.collider.CompareTag("floor") || hit.collider.CompareTag("Object"))
+                if (playerJumpBool = true)
                 {
-                    if (playerJumpBool = true)
-                    {
-                        GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
-                        anim.SetBool("jumpAnimBool", true);
-                        playerJumpBool = false;
-                    }
+                    GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
+                    anim.SetBool("jumpAnimBool", true);
+                    playerJumpBool = false;
                 }
-
             }
             else
             {
