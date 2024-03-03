@@ -13,10 +13,11 @@ public class BackGroundScrollScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startPosX = transform.position.x;
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
 
+        length = GetComponent<SpriteRenderer>().bounds.size.x;
+        startPosX = transform.position.x;
         _camera = Camera.main.gameObject;
+
     }
 
     // Update is called once per frame

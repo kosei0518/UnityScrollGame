@@ -11,7 +11,11 @@ public class BigEnemyController : MonoBehaviour
     private float bigEnemyMoveForce;
     private Animator bigEnemyAnim;
     private bool bigEnemyDirection;
+    private int bigEnemyHp;
     public GameObject bigEnemyToPlayer;
+
+    [SerializeField]
+    public GameObject bigEnemyDeathEffect;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +25,7 @@ public class BigEnemyController : MonoBehaviour
         bigEnemyActionTimer = 0f;
         bigEnemyMoveForce = -5f;
         bigEnemyDirection = false;
+        bigEnemyHp = 3;
     }
 
     // Update is called once per frame
@@ -28,7 +33,7 @@ public class BigEnemyController : MonoBehaviour
     {
         bigEnemyActionTimer += Time.deltaTime;
         if (bigEnemyActionTimer >= 3f)
-        { 
+        {
             StartCoroutine("BigEnemyCoroutine");
             bigEnemyActionTimer = 0f;
         }
@@ -38,10 +43,10 @@ public class BigEnemyController : MonoBehaviour
         bigEnemyAnim.SetBool("bigEnemyActionBool", true);
         yield return new WaitForSeconds(2.0f);
         GetComponent<Rigidbody2D>().velocity = new Vector3(bigEnemyMoveForce, bigEnemyJumpForce, 0);
-        
+
         //this.rbody2D.AddForce(transform.up * bigEnemyJumpForce, ForceMode2D.Impulse);     
         //this.rbody2D.AddForce(transform.right * bigEnemyMoveForce, ForceMode2D.Impulse);      
-        bigEnemyAnim.SetBool("bigEnemyActionBool", false);        
+        bigEnemyAnim.SetBool("bigEnemyActionBool", false);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -51,9 +56,10 @@ public class BigEnemyController : MonoBehaviour
             {
                 bigEnemyDirection = true;
                 bigEnemyMoveForce = 5f;
+
                 bigEnemy.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
-            else if(bigEnemyDirection == true)
+            else if (bigEnemyDirection == true)
             {
                 bigEnemyDirection = false;
                 bigEnemyMoveForce = -5f;
@@ -63,7 +69,7 @@ public class BigEnemyController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             bigEnemyToPlayer.SendMessage("DamageToPlayer");
-            
+
         }
         if (collision.gameObject.CompareTag("Arrow"))
         {
@@ -72,6 +78,16 @@ public class BigEnemyController : MonoBehaviour
     }
     public void DamageToEnemy()
     {
-        Destroy(this.gameObject);
+        bigEnemyHp--;
+
+        if (bigEnemyHp <= 0)
+        {
+            Instantiate(bigEnemyDeathEffect, this.transform.position, this.transform.rotation);
+            Destroy(this.gameObject);
+        }
+        else if (bigEnemyHp > 0)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector3(0, 7f, 0);
+        }
     }
 }

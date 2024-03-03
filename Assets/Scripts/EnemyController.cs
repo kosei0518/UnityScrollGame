@@ -10,6 +10,8 @@ public class EnemyController : MonoBehaviour
     public float enemyMoveCoolTime;
     public GameObject playerController;
     Rigidbody2D rb;
+    [SerializeField]
+    public GameObject enemyDeathEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -51,9 +53,9 @@ public class EnemyController : MonoBehaviour
             Debug.Log("ダメージを受けた");
 
         }
-        if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Player")||collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Enemy"))
         {
-            
+
             if (enemyMoveCoolTime >= 0.8f)
             {
                 if (moveRightDirection == false)
@@ -62,7 +64,7 @@ public class EnemyController : MonoBehaviour
                     rb.AddForce(new Vector2(2f, 6), ForceMode2D.Impulse);
                     enemyMoveCoolTime = 0.0f;
                 }
-                
+
             }
             if (enemyMoveCoolTime >= 0.8f)
             {
@@ -108,9 +110,10 @@ public class EnemyController : MonoBehaviour
     }
     public void DamageToEnemy()
     {
+        Instantiate(enemyDeathEffect, this.transform.position, this.transform.rotation);
         Destroy(this.gameObject);
     }
-       
-        
-    
+
+
+
 }

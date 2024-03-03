@@ -148,6 +148,8 @@ MonoBehaviour:
   moveRightDirection: 0
   enemyMoveCoolTime: 0
   playerController: {fileID: 0}
+  enemyDeathEffect: {fileID: 674265875034185873, guid: 61abf065988db45948ffeab991dd9e99,
+    type: 3}
 --- !u!50 &1305479751426905632
 Rigidbody2D:
   serializedVersion: 4

@@ -8,6 +8,7 @@ public class WingEnemyScript : MonoBehaviour
     private float delayTimer;
     private bool isMovingUp;
     public GameObject player;
+    public GameObject wingEnemyDeathEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,7 @@ public class WingEnemyScript : MonoBehaviour
     }
     public void DamageToEnemy()
     {
+        Instantiate(wingEnemyDeathEffect, this.transform.position, this.transform.rotation);
         Destroy(this.gameObject);
     }
 }
