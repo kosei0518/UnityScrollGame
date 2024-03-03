@@ -87,7 +87,19 @@ public class BigEnemyController : MonoBehaviour
         }
         else if (bigEnemyHp > 0)
         {
+            StartCoroutine("ChangeColor");
             GetComponent<Rigidbody2D>().velocity = new Vector3(0, 7f, 0);
         }
+    }
+    public IEnumerator ChangeColor()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.red, Mathf.PingPong(Time.time * 10, 1.0f));
+            yield return null;
+
+        }
+        GetComponent<SpriteRenderer>().color = Color.white;
+        yield return null;
     }
 }

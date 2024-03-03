@@ -16,6 +16,7 @@ public class BackGroundScrollScript : MonoBehaviour
 
         length = GetComponent<SpriteRenderer>().bounds.size.x;
         startPosX = transform.position.x;
+        Debug.Log(startPosX);
         _camera = Camera.main.gameObject;
 
     }
@@ -23,7 +24,10 @@ public class BackGroundScrollScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            startPosX += length;
+        }
     }
     private void FixedUpdate()
     {
@@ -35,13 +39,6 @@ public class BackGroundScrollScript : MonoBehaviour
         float dist = _camera.transform.position.x * parallaxEffect;
 
         transform.position = new Vector3(startPosX + dist, transform.position.y, transform.position.z);
-        if (temp > startPosX + length)
-        {
-            startPosX += length;
-        }
-        else if (temp < startPosX - length)
-        {
-            startPosX -= length;
-        }
+
     }
 }
