@@ -1,19 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class StageChanger : MonoBehaviour
+public class RetryScript : MonoBehaviour
 {
-
     // Start is called before the first frame update
     void Start()
     {
 
-
-        //stage2_btn.interactable = false;
     }
 
     // Update is called once per frame
@@ -21,13 +16,8 @@ public class StageChanger : MonoBehaviour
     {
 
     }
-    public void Stage1_1()
+    public void Retry()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("StageSelect");
     }
-    public void Stage1_2()
-    {
-        SceneManager.LoadScene("Stage2");
-    }
-
 }

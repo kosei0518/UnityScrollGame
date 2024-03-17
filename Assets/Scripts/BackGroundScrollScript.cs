@@ -16,7 +16,7 @@ public class BackGroundScrollScript : MonoBehaviour
 
         length = GetComponent<SpriteRenderer>().bounds.size.x;
         startPosX = transform.position.x;
-        Debug.Log(startPosX);
+
         _camera = Camera.main.gameObject;
 
     }
@@ -24,10 +24,7 @@ public class BackGroundScrollScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            startPosX += length;
-        }
+
     }
     private void FixedUpdate()
     {

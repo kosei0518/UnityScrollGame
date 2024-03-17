@@ -26,10 +26,13 @@ public class PlayerController : MonoBehaviour
     private bool leftStopper;
     private bool rightWalk;
     private bool leftWalk;
+    private bool stageClear;
 
     public bool playerRightDirection = true;
     private float jumpLimiter = 0.0f;
     private float rayPosX;
+    public StageChanger stageChanger;
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,85 +47,82 @@ public class PlayerController : MonoBehaviour
         leftStopper = false;
         rightWalk = false;
         leftWalk = false;
+        stageClear = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(rightStopper);
 
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (!stageClear)
         {
-            playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-
-
-            playerRightDirection = false;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            playerObj.transform.rotation = Quaternion.Euler(0, 0, 0);
-
-
-            playerRightDirection = true;
-        }
-
-        Vector3 yPos = playerObj.transform.position;
-        if (yPos.y < -3)
-        {
-            SceneManager.LoadScene("GameOver");
-        }
-        Vector2 moveVector = Vector2.zero;
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveVector = Vector2.right * moveSpeed;
-
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            moveVector = Vector2.left * moveSpeed;
-
-        }
-        rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Vector2 playerPosition = transform.position;
-            Vector2 frontRayPos = new Vector2(playerPosition.x + 0.5f, playerPosition.y - 0.6f);
-            Vector2 behindRayPos = new Vector2(playerPosition.x + -0.5f, playerPosition.y - 0.6f);
-            RaycastHit2D hit = Physics2D.Raycast(frontRayPos, Vector2.down, 0.4f);
-            RaycastHit2D behind_hit = Physics2D.Raycast(behindRayPos, Vector2.down, 0.4f);
-            //RaycastHit hit;
-            Debug.DrawRay(frontRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
-            Debug.DrawRay(behindRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
-            // Rayが "floor" タグにヒットした場合
-            if (hit.collider != null || behind_hit.collider != null)
+            if (Input.GetKey(KeyCode.LeftArrow))
             {
-                if (playerJumpBool = true)
+                playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+
+
+                playerRightDirection = false;
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                playerObj.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+
+                playerRightDirection = true;
+            }
+
+            Vector3 yPos = playerObj.transform.position;
+            if (yPos.y < -3)
+            {
+                SceneManager.LoadScene("GameOver");
+            }
+            Vector2 moveVector = Vector2.zero;
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                moveVector = Vector2.right * moveSpeed;
+
+            }
+
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveVector = Vector2.left * moveSpeed;
+
+            }
+            rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
+
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Vector2 playerPosition = transform.position;
+                Vector2 frontRayPos = new Vector2(playerPosition.x + 0.5f, playerPosition.y - 0.6f);
+                Vector2 behindRayPos = new Vector2(playerPosition.x + -0.5f, playerPosition.y - 0.6f);
+                RaycastHit2D hit = Physics2D.Raycast(frontRayPos, Vector2.down, 0.4f);
+                RaycastHit2D behind_hit = Physics2D.Raycast(behindRayPos, Vector2.down, 0.4f);
+                //RaycastHit hit;
+                Debug.DrawRay(frontRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
+                Debug.DrawRay(behindRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
+                // Rayが "floor" タグにヒットした場合
+                if (hit.collider != null || behind_hit.collider != null)
                 {
-                    GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
-                    anim.SetBool("jumpAnimBool", true);
-                    playerJumpBool = false;
+                    if (playerJumpBool = true)
+                    {
+                        GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
+                        anim.SetBool("jumpAnimBool", true);
+                        playerJumpBool = false;
+                    }
                 }
+                else
+                {
+                    Debug.Log("raycastがnullです");
+                }
+                playerJumpBool = false;
+                jumpLimiter = 0.0f;
+
             }
-            else
-            {
-                Debug.Log("raycastがnullです");
-            }
-            //if (playerJumpBool == true)
-            //{
-            //GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
-
-            playerJumpBool = false;
-            jumpLimiter = 0.0f;
-
-
-            //anim.SetBool("jumpAnimBool", true);
-            //}
         }
+
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -167,5 +167,11 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 force = direction * moveSpeed;
         rbody2D.velocity = new Vector2(force.x, rbody2D.velocity.y);
+    }
+    public void StageClear()
+    {
+        Debug.Log("a");
+        stageClear = true;
+
     }
 }
