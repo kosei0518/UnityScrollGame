@@ -9,6 +9,7 @@ public class PlayerHpIconScript : MonoBehaviour
     private GameObject playerIcon;
     private PlayerHpScript player;
     private int beforeHp;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,18 +32,9 @@ public class PlayerHpIconScript : MonoBehaviour
         ShowHpIcon();
     }
 
-    //private void ShowHpIcon()
-    ///{
-    //if (beforeHp == player.GetHp()) return;
-    // Image[] icons = transform.GetComponentsInChildren<Image>();
-    //for(int i = 0; i < icons.Length; i++)
-    //{
-    //icons[i].gameObject.SetActive(i < player.GetHp());
-    //}
-    // beforeHp = player.GetHp();
 
 
-    //}
+
     private void ShowHpIcon()
     {
         int currentHp = player.GetHp();
@@ -56,8 +48,6 @@ public class PlayerHpIconScript : MonoBehaviour
             {
                 GameObject playerHpObj = Instantiate(playerIcon);
                 playerHpObj.transform.parent = transform;
-                //GameObject playerHpObj = Instantiate(playerIcon);
-                //playerHpObj.transform.SetParent(transform, false); // 親子関係を設定
             }
         }
 

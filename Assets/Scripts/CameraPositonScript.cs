@@ -1,30 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using DG.Tweening;
 
 public class CameraPositionScript : MonoBehaviour
 {
     [SerializeField]
     private float cameraChaseDistance;
-    GameObject playerObjct;
+    GameObject playerObject;
     Transform playerTransform;
 
-    // Start is called before the first frame update
+    private Tween _shakeTween;
+
     void Start()
     {
-
-
-        playerObjct = GameObject.FindGameObjectWithTag("Player");
-        playerTransform = playerObjct.transform;
+        playerObject = GameObject.FindGameObjectWithTag("Player");
+        playerTransform = playerObject.transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (playerTransform.position.x > cameraChaseDistance)
         {
             transform.position = new Vector3(playerTransform.position.x, 7, -14);
         }
+
+        // Time.timeScaleが変更される直前にCameraShakingメソッドを呼び出す
+        if (Time.timeScale > 0 && Mathf.Approximately(Time.timeScale, 0))
+        {
+            CameraShaking();
+        }
+    }
+
+    void CameraShaking()
+    {
+        _shakeTween = transform.DOShakePosition(1.0f, new Vector3(0.1f, 0.1f, 0), 10, 90, false);
     }
 }

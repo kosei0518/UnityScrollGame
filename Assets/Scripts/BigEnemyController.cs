@@ -83,6 +83,7 @@ public class BigEnemyController : MonoBehaviour
         if (bigEnemyHp <= 0)
         {
             Instantiate(bigEnemyDeathEffect, this.transform.position, this.transform.rotation);
+            bigEnemyToPlayer.SendMessage("DestroyedBigEnemy");
             Destroy(this.gameObject);
         }
         else if (bigEnemyHp > 0)

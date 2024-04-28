@@ -18,6 +18,8 @@ public class PlayerHpScript : MonoBehaviour
     private int timeLeft;
     public Text gameTimeText;
     [SerializeField] private GameObject playerLayer;
+    public int playerScore;
+    public GameObject camera;
 
 
     // Start is called before the first frame update
@@ -26,9 +28,11 @@ public class PlayerHpScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         playerInvalid = false;
-        gameLimit = 300;
+        gameLimit = 100;
         timeLeft = 10;
-        playerHp = 3;
+        playerHp = 10;
+        playerScore = 0;
+        Time.timeScale = 1;
     }
 
 
@@ -49,13 +53,16 @@ public class PlayerHpScript : MonoBehaviour
     }
     public void DamageToPlayer()
     {
+        playerHp--;
         if (playerInvalid == false)
         {
-            StartCoroutine("PlayerInvisible");
-            PlayerSetLayerFalse();
-            playerHp--;
-
-
+            if (playerHp > 0)
+            {
+                camera.SendMessage("CameraShaking");
+                StartCoroutine(Restart());
+                StartCoroutine("PlayerInvisible");
+                PlayerSetLayerFalse();
+            }
             if (playerHp <= 0)
             {
                 if (onceCallGameOver == false)
@@ -63,10 +70,27 @@ public class PlayerHpScript : MonoBehaviour
                     Debug.Log("gameover");
                     SceneManager.LoadScene("GameOver");
                     onceCallGameOver = true;
-
                 }
             }
         }
+    }
+    public IEnumerator Restart()
+    {
+        //停止する//ダメージ受けてる最中
+        Time.timeScale = 0;
+
+        //ダメージ音鳴らすことを書いてる
+
+        //3秒停止する
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        //再開する
+        Time.timeScale = 1;
+    }
+    public void DestroyedBigEnemy()
+    {
+        playerScore += 100;
+        Debug.Log(playerScore);
     }
     private IEnumerator PlayerInvisible()
     {

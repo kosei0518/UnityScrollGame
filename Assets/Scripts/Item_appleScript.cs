@@ -5,6 +5,7 @@ using UnityEngine;
 public class Item_appleScrpt : MonoBehaviour
 {
     public GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,9 @@ public class Item_appleScrpt : MonoBehaviour
         Debug.Log("回復");
         if (collider.gameObject.CompareTag("Player"))
         {
+
             player.SendMessage("Recover");
+
             Destroy(this.gameObject);
         }
     }

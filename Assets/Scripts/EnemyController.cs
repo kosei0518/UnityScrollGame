@@ -12,6 +12,9 @@ public class EnemyController : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField]
     public GameObject enemyDeathEffect;
+    float transparency = 0.0f;
+    float appearFromBush = 1.0f;
+    SpriteRenderer sr;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +22,7 @@ public class EnemyController : MonoBehaviour
         moveRightDirection = false;
         enemyMoveCoolTime = 0.0f;
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -52,8 +56,9 @@ public class EnemyController : MonoBehaviour
             //Destroy(this.gameObject);
             Debug.Log("ダメージを受けた");
 
+
         }
-        if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Enemy"))
         {
 
             if (enemyMoveCoolTime >= 0.8f)
@@ -61,7 +66,7 @@ public class EnemyController : MonoBehaviour
                 if (moveRightDirection == false)
                 {
                     moveRightDirection = true;
-                    rb.AddForce(new Vector2(2f, 6), ForceMode2D.Impulse);
+                    rb.AddForce(new Vector2(2f, 8), ForceMode2D.Impulse);
                     enemyMoveCoolTime = 0.0f;
                 }
 
@@ -71,7 +76,7 @@ public class EnemyController : MonoBehaviour
                 if (moveRightDirection == true)
                 {
                     moveRightDirection = false;
-                    rb.AddForce(new Vector2(-2f, 6), ForceMode2D.Impulse);
+                    rb.AddForce(new Vector2(-2f, 8), ForceMode2D.Impulse);
                     enemyMoveCoolTime = 0.0f;
                 }
             }
@@ -85,7 +90,7 @@ public class EnemyController : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Enemy"))
         {
             if (enemyMoveCoolTime >= 0.8f)
             {
@@ -113,7 +118,26 @@ public class EnemyController : MonoBehaviour
         Instantiate(enemyDeathEffect, this.transform.position, this.transform.rotation);
         Destroy(this.gameObject);
     }
-
-
+    // private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //  if (other.gameObject.CompareTag("Bush"))
+    // {
+    //            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, transparency);
+    // }
+    //}
+    //private void OnTriggerExit2D(Collider2D other)
+    // {
+    // if (other.gameObject.CompareTag("Bush"))
+    // {
+    // sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, appearFromBush);
+    //}
+    // }
+    //private void OnTriggerStay2D(Collider2D other)
+    //{
+    //if (other.gameObject.CompareTag("Bush"))
+    //{
+    // sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, transparency);
+    //}
+    //}
 
 }

@@ -18,20 +18,19 @@ public class PlayerController : MonoBehaviour
     private float moveSpeed = 5.5f;
     public bool equipSwordBool;
     public bool swordBool;
-    private bool rightWall;
-    private bool leftWall;
 
     public GameObject swordAttackRange;
-    private bool rightStopper;
-    private bool leftStopper;
-    private bool rightWalk;
-    private bool leftWalk;
     private bool stageClear;
 
     public bool playerRightDirection = true;
     private float jumpLimiter = 0.0f;
     private float rayPosX;
-    public StageChanger stageChanger;
+    private float transparency = 0.4f;
+    private SpriteRenderer sr;
+    //public StageChanger stageChanger;
+    AudioSource audio_GetApple;
+    public AudioClip sound2;
+
 
 
     // Start is called before the first frame update
@@ -41,86 +40,78 @@ public class PlayerController : MonoBehaviour
         rbody2D = GetComponent<Rigidbody2D>();
         characterController = GetComponent<CharacterController>();
         swordBool = false;
-        rightWall = false;
-        leftWall = false;
-        rightStopper = false;
-        leftStopper = false;
-        rightWalk = false;
-        leftWalk = false;
         stageClear = false;
+        sr = GetComponent<SpriteRenderer>();
+        audio_GetApple = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
-        if (!stageClear)
+        if (stageClear)
         {
-            if (Input.GetKey(KeyCode.LeftArrow))
+            return;
+        }
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+            playerRightDirection = false;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            playerObj.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+
+            playerRightDirection = true;
+        }
+
+        Vector3 yPos = playerObj.transform.position;
+        if (yPos.y < -3)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+
+        Vector2 moveVector = Vector2.zero;
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            moveVector = Vector2.right * moveSpeed;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            moveVector = Vector2.left * moveSpeed;
+
+        }
+        rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Vector2 playerPosition = transform.position;
+            Vector2 frontRayPos = new Vector2(playerPosition.x + 0.3f, playerPosition.y - 0.6f);
+            Vector2 behindRayPos = new Vector2(playerPosition.x + -0.3f, playerPosition.y - 0.6f);
+            RaycastHit2D hit = Physics2D.Raycast(frontRayPos, Vector2.down, 0.4f);
+            RaycastHit2D behind_hit = Physics2D.Raycast(behindRayPos, Vector2.down, 0.4f);
+            Debug.DrawRay(frontRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
+            Debug.DrawRay(behindRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
+            // Rayが "floor" タグにヒットした場合
+            if (hit.collider != null || behind_hit.collider != null)
             {
-                playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-
-
-                playerRightDirection = false;
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                playerObj.transform.rotation = Quaternion.Euler(0, 0, 0);
-
-
-                playerRightDirection = true;
-            }
-
-            Vector3 yPos = playerObj.transform.position;
-            if (yPos.y < -3)
-            {
-                SceneManager.LoadScene("GameOver");
-            }
-            Vector2 moveVector = Vector2.zero;
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                moveVector = Vector2.right * moveSpeed;
-
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                moveVector = Vector2.left * moveSpeed;
-
-            }
-            rbody2D.velocity = new Vector2(moveVector.x, rbody2D.velocity.y);
-
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Vector2 playerPosition = transform.position;
-                Vector2 frontRayPos = new Vector2(playerPosition.x + 0.5f, playerPosition.y - 0.6f);
-                Vector2 behindRayPos = new Vector2(playerPosition.x + -0.5f, playerPosition.y - 0.6f);
-                RaycastHit2D hit = Physics2D.Raycast(frontRayPos, Vector2.down, 0.4f);
-                RaycastHit2D behind_hit = Physics2D.Raycast(behindRayPos, Vector2.down, 0.4f);
-                //RaycastHit hit;
-                Debug.DrawRay(frontRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
-                Debug.DrawRay(behindRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
-                // Rayが "floor" タグにヒットした場合
-                if (hit.collider != null || behind_hit.collider != null)
+                if (playerJumpBool = true)
                 {
-                    if (playerJumpBool = true)
-                    {
-                        GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
-                        anim.SetBool("jumpAnimBool", true);
-                        playerJumpBool = false;
-                    }
+                    GetComponent<Rigidbody2D>().velocity = new Vector3(0, jumpForce, 0);
+                    anim.SetBool("jumpAnimBool", true);
+                    playerJumpBool = false;
                 }
-                else
-                {
-                    Debug.Log("raycastがnullです");
-                }
-                playerJumpBool = false;
-                jumpLimiter = 0.0f;
-
             }
+            else
+            {
+                Debug.Log("raycastがnullです");
+            }
+            playerJumpBool = false;
+            jumpLimiter = 0.0f;
         }
 
 
@@ -130,11 +121,13 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("floor") || collision.gameObject.CompareTag("Object"))
         {
             anim.SetBool("jumpAnimBool", false);
-
             playerJumpBool = true;
-
-
         }
+        if (collision.gameObject.CompareTag("Bush"))
+        {
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, transparency);
+        }
+
     }
     private void OnCollisionStay2D(Collision2D stay)
     {
@@ -144,14 +137,12 @@ public class PlayerController : MonoBehaviour
             if (jumpLimiter >= 0.1f)
             {
                 anim.SetBool("jumpAnimBool", false);
-
-
                 playerJumpBool = true;
             }
-
-
-
-
+        }
+        if (stay.gameObject.CompareTag("Bush"))
+        {
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, transparency);
         }
 
     }
@@ -160,18 +151,25 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("floor") || other.gameObject.CompareTag("Object"))
         {
             playerJumpBool = false;
-
+        }
+        if (other.gameObject.CompareTag("Bush"))
+        {
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 1.0f);
         }
     }
-    void Move(Vector2 direction)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Vector2 force = direction * moveSpeed;
-        rbody2D.velocity = new Vector2(force.x, rbody2D.velocity.y);
+        if (other.gameObject.CompareTag("apple"))
+        {
+            audio_GetApple.PlayOneShot(sound2);
+            Debug.Log("リンゴを食べた");
+        }
     }
     public void StageClear()
     {
-        Debug.Log("a");
+
         stageClear = true;
+        rbody2D.velocity = Vector2.zero;
 
     }
 }

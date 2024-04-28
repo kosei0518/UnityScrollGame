@@ -38,7 +38,7 @@ public class ArrowScript : MonoBehaviour
         if (equipBowBool == true)
         {
             shootInterval += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 if (shootInterval >= 1.0f)
                 {

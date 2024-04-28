@@ -12,8 +12,6 @@ public class StageChanger : MonoBehaviour
     void Start()
     {
 
-
-        //stage2_btn.interactable = false;
     }
 
     // Update is called once per frame
@@ -29,5 +27,12 @@ public class StageChanger : MonoBehaviour
     {
         SceneManager.LoadScene("Stage2");
     }
-
+    public void Stage1_3()
+    {
+        SceneManager.LoadScene("Stage3");
+    }
+    public void Stage1_4()
+    {
+        SceneManager.LoadScene("Stage4");
+    }
 }
