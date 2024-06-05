@@ -1275,7 +1275,7 @@ Transform:
   m_GameObject: {fileID: 686926696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8, y: 3.651, z: 0.01}
+  m_LocalPosition: {x: 78.1, y: 5.2, z: 0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1428,7 +1428,6 @@ MonoBehaviour:
   swordBool: 0
   swordAttackRange: {fileID: 1787471435}
   playerRightDirection: 1
-  stageChanger: {fileID: 0}
   sound2: {fileID: 8300000, guid: 521a8efc65f2149359c3d1b73c26465e, type: 3}
 --- !u!114 &686926702
 MonoBehaviour:
@@ -1501,7 +1500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 200}
+  m_AnchoredPosition: {x: 0, y: 195}
   m_SizeDelta: {x: 180.2781, y: 34.5923}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &743584052

@@ -1181,7 +1181,7 @@ Transform:
   m_GameObject: {fileID: 686926696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 47.2, y: 11.9, z: 0.01}
+  m_LocalPosition: {x: 75.3, y: 14.8, z: 0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1334,7 +1334,6 @@ MonoBehaviour:
   swordBool: 0
   swordAttackRange: {fileID: 1787471435}
   playerRightDirection: 1
-  stageChanger: {fileID: 0}
   sound2: {fileID: 8300000, guid: 521a8efc65f2149359c3d1b73c26465e, type: 3}
 --- !u!114 &686926702
 MonoBehaviour:

@@ -30,7 +30,7 @@ public class PlayerHpScript : MonoBehaviour
         playerInvalid = false;
         gameLimit = 100;
         timeLeft = 10;
-        playerHp = 10;
+        playerHp = 3;
         playerScore = 0;
         Time.timeScale = 1;
     }

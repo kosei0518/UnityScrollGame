@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public bool swordBool;
 
     public GameObject swordAttackRange;
-    private bool stageClear;
+    private bool sceneStop;
 
     public bool playerRightDirection = true;
     private float jumpLimiter = 0.0f;
@@ -40,15 +40,22 @@ public class PlayerController : MonoBehaviour
         rbody2D = GetComponent<Rigidbody2D>();
         characterController = GetComponent<CharacterController>();
         swordBool = false;
-        stageClear = false;
+        sceneStop = false;
+        //StartCoroutine(SceneStopCoroutine());
         sr = GetComponent<SpriteRenderer>();
         audio_GetApple = GetComponent<AudioSource>();
     }
+    //private IEnumerator SceneStopCoroutine()
+    //{
+    //yield return new WaitForSeconds(2.0f); // 3秒待つ
+    //sceneStop = false; // 3秒後にsceneStopをfalseに設定
+    // }
 
     // Update is called once per frame
     void Update()
     {
-        if (stageClear)
+
+        if (sceneStop)
         {
             return;
         }
@@ -92,8 +99,8 @@ public class PlayerController : MonoBehaviour
             Vector2 playerPosition = transform.position;
             Vector2 frontRayPos = new Vector2(playerPosition.x + 0.3f, playerPosition.y - 0.6f);
             Vector2 behindRayPos = new Vector2(playerPosition.x + -0.3f, playerPosition.y - 0.6f);
-            RaycastHit2D hit = Physics2D.Raycast(frontRayPos, Vector2.down, 0.4f);
-            RaycastHit2D behind_hit = Physics2D.Raycast(behindRayPos, Vector2.down, 0.4f);
+            RaycastHit2D hit = Physics2D.Raycast(frontRayPos, Vector2.down, 0.02f);
+            RaycastHit2D behind_hit = Physics2D.Raycast(behindRayPos, Vector2.down, 0.02f);
             Debug.DrawRay(frontRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
             Debug.DrawRay(behindRayPos, Vector2.down * 0.6f, Color.blue, 3.0f);
             // Rayが "floor" タグにヒットした場合
@@ -168,7 +175,7 @@ public class PlayerController : MonoBehaviour
     public void StageClear()
     {
 
-        stageClear = true;
+        sceneStop = true;
         rbody2D.velocity = Vector2.zero;
 
     }
